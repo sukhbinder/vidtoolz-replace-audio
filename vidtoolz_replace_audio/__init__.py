@@ -1,7 +1,13 @@
 import vidtoolz
 
 
-from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_audioclips, CompositeAudioClip
+from moviepy.editor import (
+    VideoFileClip,
+    AudioFileClip,
+    concatenate_audioclips,
+    CompositeAudioClip,
+)
+
 
 def add_audio_to_video(video_file, audio_file, output_file, original_audio_volume=50):
     """
@@ -16,45 +22,63 @@ def add_audio_to_video(video_file, audio_file, output_file, original_audio_volum
     """
     # Load the video file
     video = VideoFileClip(video_file)
-    
+
     # Load the audio file
     audio = AudioFileClip(audio_file)
-    
+
     # Adjust original audio volume
     original_audio = video.audio.volumex(original_audio_volume / 100.0)
-    
+
     # Repeat the audio to match video duration
     audio_duration = audio.duration
     video_duration = video.duration
     if audio_duration < video_duration:
         num_repeats = int(video_duration // audio_duration) + 1
         audio = concatenate_audioclips([audio] * num_repeats)
-    
+
     # Trim the audio to match video duration
     audio = audio.subclip(0, video_duration)
-    
+
     # Combine the original and new audio tracks
     # combined_audio = original_audio.audio_fadeout(1).fx("audio_mix", audio)
     combined_audio = CompositeAudioClip([original_audio, audio])
-    
+
     # Set the new audio to the video
     video_with_new_audio = video.set_audio(combined_audio)
-    
+
     # Write the output video
-    video_with_new_audio.write_videofile(output_file, codec="libx264", audio_codec="aac")
+    video_with_new_audio.write_videofile(
+        output_file, codec="libx264", audio_codec="aac"
+    )
     return output_file
 
+
 def create_parser(subparser):
-    parser = subparser.add_parser("repaudio", description="Replace audio for a video file")
-    parser.add_argument('video', type=str,  help='Path to the input video file')
-    parser.add_argument('audio', type=str, help='Path to the audio file')
-    parser.add_argument("-o", '--output', type=str, default="output.mp4", help='Path to save the output video')
-    parser.add_argument("-v", '--volume', type=float, default=30, help='Percentage to lower the original audio (0-100)')
+    parser = subparser.add_parser(
+        "repaudio", description="Replace audio for a video file"
+    )
+    parser.add_argument("video", type=str, help="Path to the input video file")
+    parser.add_argument("audio", type=str, help="Path to the audio file")
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default="output.mp4",
+        help="Path to save the output video",
+    )
+    parser.add_argument(
+        "-v",
+        "--volume",
+        type=float,
+        default=30,
+        help="Percentage to lower the original audio (0-100)",
+    )
     return parser
 
 
 class ViztoolzPlugin:
     """ Replace audio for a video file """
+
     __name__ = "repaudio"
 
     @vidtoolz.hookimpl
@@ -64,9 +88,10 @@ class ViztoolzPlugin:
 
     def run(self, args):
         _ = add_audio_to_video(args.video, args.audio, args.output, args.volume)
-    
+
     def hello(self, args):
         # this routine will be called when "vidtoolz "repaudio is called."
         print("Hello! This is an example ``vidtoolz`` plugin.")
+
 
 repaudio_plugin = ViztoolzPlugin()
