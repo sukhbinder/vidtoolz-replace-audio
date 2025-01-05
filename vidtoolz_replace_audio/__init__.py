@@ -1,7 +1,7 @@
 import vidtoolz
 
 
-from moviepy.editor import (
+from moviepy import (
     VideoFileClip,
     AudioFileClip,
     concatenate_audioclips,
@@ -44,7 +44,7 @@ def add_audio_to_video(video_file, audio_file, output_file, original_audio_volum
     combined_audio = CompositeAudioClip([original_audio, audio])
 
     # Set the new audio to the video
-    video_with_new_audio = video.set_audio(combined_audio)
+    video_with_new_audio = video.with_audio(combined_audio)
 
     # Write the output video
     video_with_new_audio.write_videofile(
