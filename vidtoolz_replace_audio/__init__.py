@@ -20,7 +20,7 @@ def determine_output_path(input_file, output_file):
             return os.path.join(input_dir, output_filename)
         return output_file
     else:
-        return os.path.join(input_dir, f"{name}_trim.mp4")
+        return os.path.join(input_dir, f"{name}_audio.mp4")
 
 
 def add_audio_to_video(video_file, audio_file, output_file, original_audio_volume=50):
