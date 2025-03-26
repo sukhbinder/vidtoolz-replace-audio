@@ -1,4 +1,5 @@
 import vidtoolz
+import os
 
 
 from moviepy import (
@@ -9,11 +10,24 @@ from moviepy import (
 )
 
 
+def determine_output_path(input_file, output_file):
+    input_dir, input_filename = os.path.split(input_file)
+    name, _ = os.path.splitext(input_filename)
+
+    if output_file:
+        output_dir, output_filename = os.path.split(output_file)
+        if not output_dir:  # If no directory is specified, use input file's directory
+            return os.path.join(input_dir, output_filename)
+        return output_file
+    else:
+        return os.path.join(input_dir, f"{name}_trim.mp4")
+
+
 def add_audio_to_video(video_file, audio_file, output_file, original_audio_volume=50):
     """
     Adds an external audio track to a video file, lowering the original audio by a specified percentage.
     If the external audio is shorter than the video, it is looped to match the video's duration.
-    
+
     Parameters:
         video_file (str): Path to the video file.
         audio_file (str): Path to the audio file.
@@ -63,7 +77,7 @@ def create_parser(subparser):
         "-o",
         "--output",
         type=str,
-        default="output.mp4",
+        default=None,
         help="Path to save the output video",
     )
     parser.add_argument(
@@ -77,7 +91,7 @@ def create_parser(subparser):
 
 
 class ViztoolzPlugin:
-    """ Replace audio for a video file """
+    """Replace audio for a video file"""
 
     __name__ = "repaudio"
 
@@ -87,7 +101,8 @@ class ViztoolzPlugin:
         self.parser.set_defaults(func=self.run)
 
     def run(self, args):
-        _ = add_audio_to_video(args.video, args.audio, args.output, args.volume)
+        output = determine_output_path(args.video, args.output)
+        _ = add_audio_to_video(args.video, args.audio, output, args.volume)
 
     def hello(self, args):
         # this routine will be called when "vidtoolz "repaudio is called."

@@ -13,7 +13,7 @@ def test_create_parser():
     result = parser.parse_args(["video.mp4", "audio.mp3"])
     assert result.video == "video.mp4"
     assert result.audio == "audio.mp3"
-    assert result.output == "output.mp4"
+    assert result.output is None
     assert result.volume == 30
 
 
