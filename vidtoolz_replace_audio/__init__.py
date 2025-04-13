@@ -7,6 +7,7 @@ from moviepy import (
     AudioFileClip,
     concatenate_audioclips,
     CompositeAudioClip,
+    afx,
 )
 
 
@@ -41,7 +42,10 @@ def add_audio_to_video(video_file, audio_file, output_file, original_audio_volum
     audio = AudioFileClip(audio_file)
 
     # Adjust original audio volume
-    original_audio = video.audio.volumex(original_audio_volume / 100.0)
+    # original_audio = video.audio.volumex()
+    original_audio = video.audio.with_effects(
+        [afx.MultiplyVolume(original_audio_volume / 100.0)]
+    )
 
     # Repeat the audio to match video duration
     audio_duration = audio.duration
@@ -51,7 +55,7 @@ def add_audio_to_video(video_file, audio_file, output_file, original_audio_volum
         audio = concatenate_audioclips([audio] * num_repeats)
 
     # Trim the audio to match video duration
-    audio = audio.subclip(0, video_duration)
+    audio = audio.subclipped(0, video_duration)
 
     # Combine the original and new audio tracks
     # combined_audio = original_audio.audio_fadeout(1).fx("audio_mix", audio)
