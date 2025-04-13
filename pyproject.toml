@@ -1,6 +1,6 @@
 [project]
 name = "vidtoolz-replace-audio"
-version = "0.0.3"
+version = "0.0.2"
 description = "Replace audio for a video file"
 readme = "README.md"
 authors = [{name = "Sukhbinder Singh"}]

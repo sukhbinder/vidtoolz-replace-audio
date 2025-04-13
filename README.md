@@ -25,6 +25,23 @@ vidtoolz install vidtoolz-replace-audio
 type ``vidtoolz-replace-audio --help`` to get help
 
 
+```bash
+usage: vid repaudio [-h] [-o OUTPUT] [-v VOLUME] video audio
+
+Replace audio for a video file
+
+positional arguments:
+  video                 Path to the input video file
+  audio                 Path to the audio file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        Path to save the output video
+  -v VOLUME, --volume VOLUME
+                        Percentage to lower the original audio (0-100)
+
+```
 
 ## Development
 
