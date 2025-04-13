@@ -24,7 +24,9 @@ def determine_output_path(input_file, output_file):
         return os.path.join(input_dir, f"{name}_audio.mp4")
 
 
-def add_audio_to_video(video_file, audio_file, output_file, original_audio_volume=50):
+def add_audio_to_video(
+    video_file, audio_file, output_file, original_audio_volume=50, startat=0
+):
     """
     Adds an external audio track to a video file, lowering the original audio by a specified percentage.
     If the external audio is shorter than the video, it is looped to match the video's duration.
@@ -40,6 +42,7 @@ def add_audio_to_video(video_file, audio_file, output_file, original_audio_volum
 
     # Load the audio file
     audio = AudioFileClip(audio_file)
+    audio = audio.subclipped(start_time=startat)
 
     # Adjust original audio volume
     # original_audio = video.audio.volumex()
@@ -91,6 +94,14 @@ def create_parser(subparser):
         default=30,
         help="Percentage to lower the original audio (0-100)",
     )
+
+    parser.add_argument(
+        "-s",
+        "--startat",
+        type=float,
+        default=0.0,
+        help="Load audio at this time in seconds.",
+    )
     return parser
 
 
@@ -106,7 +117,9 @@ class ViztoolzPlugin:
 
     def run(self, args):
         output = determine_output_path(args.video, args.output)
-        _ = add_audio_to_video(args.video, args.audio, output, args.volume)
+        _ = add_audio_to_video(
+            args.video, args.audio, output, args.volume, args.startat
+        )
 
     def hello(self, args):
         # this routine will be called when "vidtoolz "repaudio is called."

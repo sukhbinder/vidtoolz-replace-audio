@@ -20,6 +20,7 @@ def test_create_parser():
     assert result.audio == "audio.mp3"
     assert result.output is None
     assert result.volume == 30
+    assert result.startat == 0.0
 
 
 def test_plugin(capsys):
