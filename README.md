@@ -28,7 +28,7 @@ type ``vidtoolz-replace-audio --help`` to get help
 
 
 ```bash
-usage: vid repaudio [-h] [-o OUTPUT] [-v VOLUME] video audio
+usage: vid repaudio [-h] [-o OUTPUT] [-v VOLUME] [-s STARTAT] video audio
 
 Replace audio for a video file
 
@@ -39,9 +39,12 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -o OUTPUT, --output OUTPUT
-                        Path to save the output video
+                        Path to save the output video. Default None
   -v VOLUME, --volume VOLUME
-                        Percentage to lower the original audio (0-100)
+                        Percentage to lower the original audio (0-100),
+                        Default 30
+  -s STARTAT, --startat STARTAT
+                        Load audio at this time in seconds. Default 0
 
 ```
 

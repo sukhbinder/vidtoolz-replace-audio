@@ -85,14 +85,14 @@ def create_parser(subparser):
         "--output",
         type=str,
         default=None,
-        help="Path to save the output video",
+        help="Path to save the output video. Default None",
     )
     parser.add_argument(
         "-v",
         "--volume",
         type=float,
         default=30,
-        help="Percentage to lower the original audio (0-100)",
+        help="Percentage to lower the original audio (0-100), Default 30",
     )
 
     parser.add_argument(
@@ -100,7 +100,7 @@ def create_parser(subparser):
         "--startat",
         type=float,
         default=0.0,
-        help="Load audio at this time in seconds.",
+        help="Load audio at this time in seconds. Default 0",
     )
     return parser
 
