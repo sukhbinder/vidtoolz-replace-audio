@@ -7,6 +7,8 @@
 
 Replace audio for a video file
 
+![vidtoolz-replace-audio demo](https://github.com/sukhbinder/vidtoolz-replace-audio/blob/main/vidtoolz-repaudio.gif)
+
 ## Installation
 
 First install [vidtoolz](https://github.com/sukhbinder/vidtoolz).
